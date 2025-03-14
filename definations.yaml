@@ -1,0 +1,54 @@
+servers:
+  - url: http://127.0.0.1:8080/api
+    description: Local server
+  - url: https://127:0.0.1:8080/api
+    description: Local server
+
+components:
+
+  responses:
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  schemas:
+    SuccessWithoutDataResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Success message
+
+    SuccessWithDataResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Success message
+        data:
+          type: object
+
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Error message
