@@ -1,4 +1,4 @@
-import { Op, where } from 'sequelize';
+import { Op } from 'sequelize';
 import db from '../db/models'
 class BookService{
     static async create(body){
@@ -30,6 +30,7 @@ class BookService{
         const books = await db.Books.findAll({
             where:{is_removed:false},
             attributes:[
+                'id',
                 'title',
                 'author',
                 'isbn',
@@ -53,6 +54,7 @@ class BookService{
                 id:id
             },
             attributes:[
+                'id',
                 'title',
                 'author',
                 'isbn',
@@ -103,6 +105,7 @@ class BookService{
         const books = await db.Books.findAll({
             where: whereQuery,
             attributes:[
+                'id',
                 'title',
                 'author',
                 'isbn',
