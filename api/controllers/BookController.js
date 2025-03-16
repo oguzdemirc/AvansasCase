@@ -1,8 +1,11 @@
 import Joi, { types } from "joi";
+
 import BookService from "../services/BookService";
+
 class BookController{
     static async create(req,res){
         try {
+            const {body} = req;
 
             const schema = Joi.object({
                 title: Joi.string().required(),
@@ -14,11 +17,12 @@ class BookController{
                 publish_year: Joi.number().required(),
             });
     
-            const {error} = schema.validate(req.body);
+            const {error} = schema.validate(body);
             if (error) {
+                // input data error, 400
                 throw new Error(error.details[0].message);
             }
-            const result = await BookService.create(req.body);
+            const result = await BookService.create(body);
             return res.json({
                 type:true,
                 message:'Kitap oluşturuldu',
