@@ -16,7 +16,7 @@ class BookController{
     
             const {error} = schema.validate(req.body);
             if (error) {
-                throw new Error(error.details);
+                throw new Error(error.details[0].message);
             }
             const result = await BookService.create(req.body);
             return res.json({
@@ -69,6 +69,40 @@ class BookController{
                 type:false,
                 message:'Beklenmedik bir hata oluştu.Lütfen daha sonra tekrar deneyiniz',
                 error_detail:error.message
+            })
+        }
+    }
+
+    static async get_by_query(req, res){
+        try {
+            const {query} = req;
+
+            const schema = Joi.object({
+                title: Joi.string(),
+                author: Joi.string(),
+                isbn: Joi.string(),
+                category_id: Joi.number(),
+                publish_year: Joi.number(),
+            });
+    
+            const {error} = schema.validate(query);
+            if (error) {
+                throw new Error(error.details[0].message);
+            }
+
+            const result = await BookService.get_by_query(query);
+
+            return res.json({
+                type:true,
+                message:'kitap getirildi',
+                data:result
+            })
+        } catch (error) {
+            console.log(error)
+            return res.json({
+                type:false,
+                message:'Beklenmedik bir hata oluştu.Lütfen daha sonra tekrar deneyiniz',
+                error_detail: error.message
             })
         }
     }

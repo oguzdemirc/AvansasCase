@@ -1,4 +1,4 @@
-import { where } from 'sequelize';
+import { Op, where } from 'sequelize';
 import db from '../db/models'
 class BookService{
     static async create(body){
@@ -51,9 +51,72 @@ class BookService{
             where:{
                 is_removed:false,
                 id:id
-            }
+            },
+            attributes:[
+                'title',
+                'author',
+                'isbn',
+                'price',
+                'stock',
+                'publish_year'
+            ],
+            include:[{
+                model:db.Categories,
+                as:'category',
+                attributes:['name']
+            }]
         })
         return book;
+    }
+
+    static async get_by_query(query){
+        const whereQuery = {
+            is_removed: false
+        };
+
+        if(query?.title){
+            whereQuery['title'] = {
+                [Op.iLike]: `%${query.title}%`
+            }
+        }
+
+        if(query?.author){
+            whereQuery['author'] = {
+                [Op.iLike]: `%${query.author}%`
+            }
+        }
+
+        if(query?.isbn){
+            whereQuery['isbn'] = {
+                [Op.iLike]: `%${query.isbn}%`
+            }
+        }
+
+        if(query?.category_id){
+            whereQuery['category_id'] = category_id
+        }
+
+        if(query?.publish_year){
+            whereQuery['publish_year'] = publish_year
+        }
+
+        const books = await db.Books.findAll({
+            where: whereQuery,
+            attributes:[
+                'title',
+                'author',
+                'isbn',
+                'price',
+                'stock',
+                'publish_year'
+            ],
+            include:[{
+                model:db.Categories,
+                as:'category',
+                attributes:['name']
+            }],
+        })
+        return books;
     }
 
    

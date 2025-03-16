@@ -73,6 +73,51 @@ app.post('/',  BookController.create);
  *               $ref: "#/components/schemas/SuccessWithDataResponse"
 */
 app.get('/',  BookController.get_all_data)
+
+
+/**
+ * @swagger
+ * /books/search:
+ *   get:
+ *     tags:
+ *       - books
+ *     summary: Get book by id
+ *     parameters:
+ *       - name: title
+ *         in: query
+ *         schema:
+ *           type: string
+ *           default: "title"
+ *       - name: author
+ *         in: query
+ *         schema:
+ *           type: string
+ *           default: "author"
+ *       - name: isbn
+ *         in: query
+ *         schema:
+ *           type: string
+ *           default: "1111-1111-1111"
+ *       - name: category_id
+ *         in: query
+ *         schema:
+ *           type: number
+ *           default: 1
+ *       - name: isbnsss
+ *         in: query
+ *         schema:
+ *           type: string
+ *           default: "123"
+ *     responses:
+ *       200:
+ *         description: Get book by query
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/SuccessWithDataResponse"
+*/
+app.get('/search',  BookController.get_by_query)
+
 /**
  * @swagger
  * /books/{id}:
@@ -97,5 +142,7 @@ app.get('/',  BookController.get_all_data)
  *         $ref: "#/components/responses/NotFoundError"
 */
 app.get('/:id',  BookController.get_by_id)
+
+
 
 export default app;
